@@ -32,6 +32,7 @@ def fetch_eastmoney_news(max_items: int = 30) -> list[dict]:
     try:
         resp = requests.get("https://www.eastmoney.com/", headers=HEADERS, timeout=15)
         resp.raise_for_status()
+        resp.encoding = resp.apparent_encoding  # 自动检测编码
         soup = BeautifulSoup(resp.text, "lxml")
         
             # 提取所有新闻链接
