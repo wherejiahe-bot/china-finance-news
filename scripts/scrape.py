@@ -34,10 +34,11 @@ def fetch_eastmoney_news(max_items: int = 30) -> list[dict]:
         resp.raise_for_status()
         soup = BeautifulSoup(resp.text, "lxml")
         
-        # 提取所有新闻链接
+            # 提取所有新闻链接
         for a_tag in soup.find_all("a", href=True):
             href = a_tag["href"]
-            title = a_tag.get("title", "") or a_tag.get_text(strip=True)
+            # 优先取标签内文本，其次取 title 属性
+            title = a_tag.get_text(strip=True) or a_tag.get("title", "")
             
             # 只提取东方财富新闻链接
             if "//finance.eastmoney.com/a/" in href and title and len(title) > 5:
